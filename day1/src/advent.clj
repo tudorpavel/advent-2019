@@ -6,8 +6,14 @@
 (defn solve1 [lines]
   (reduce + (map (comp fuel-required read-string) lines)))
 
+(defn total-fuel-required [mass acc-fuel]
+  (let [fuel (fuel-required mass)]
+    (if (<= fuel 0)
+      acc-fuel
+      (recur fuel (+ acc-fuel fuel)))))
+
 (defn solve2 [lines]
-  "Soon..")
+  (reduce + (map (comp #(total-fuel-required % 0) read-string) lines)))
 
 (defn read-input []
   (clojure.string/split-lines (slurp *in*)))
