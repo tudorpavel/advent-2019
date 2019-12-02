@@ -15,11 +15,19 @@
     99 program
     (throw (AssertionError. "Unexpected instruction code."))))
 
+(defn run-program-with-inputs [noun verb program]
+  (first (run-program 0 (assoc (assoc program 2 verb) 1 noun))))
+
 (defn solve1 [input]
-  (first (run-program 0 (assoc (assoc input 2 2) 1 12))))
+  (run-program-with-inputs 12 2 input))
 
 (defn solve2 [input]
-  "Soon..")
+  (first
+   (for [noun (range 100)
+         verb (range 100)
+         :let [output (run-program-with-inputs noun verb input)]
+         :when (= output 19690720)]
+     (+ (* 100 noun) verb))))
 
 (defn read-input []
   (vec (map read-string
