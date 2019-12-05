@@ -2,10 +2,10 @@
   (:require [intcode-computer :as ic]))
 
 (defn solve1 [program]
-  (:outputs (ic/run-program program [1])))
+  (last (:outputs (ic/run-program program [1]))))
 
 (defn solve2 [program]
-  "Soon.")
+  (last (:outputs (ic/run-program program [5]))))
 
 (defn -main []
   (defn read-input []
