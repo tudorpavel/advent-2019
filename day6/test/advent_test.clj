@@ -40,3 +40,16 @@
                 :K '(:L)}]
     (is (= 42 (compute-total-depths orbits)))
     ))
+
+(deftest min-transfer-count-test
+  (let [orbits {:COM '(:B)
+                :B '(:C :G)
+                :C '(:D)
+                :D '(:E :I)
+                :E '(:F :J)
+                :G '(:H)
+                :J '(:K)
+                :K '(:L :YOU)
+                :I '(:SAN)}]
+    (is (= 4 (min-transfer-count orbits :YOU :SAN)))
+    ))

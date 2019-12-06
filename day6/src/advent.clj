@@ -1,4 +1,9 @@
-(ns advent)
+(ns advent
+  (:require clojure.set))
+
+(defn- symmetric-difference [s1 s2]
+  (clojure.set/union (clojure.set/difference s1 s2)
+                     (clojure.set/difference s2 s1)))
 
 (defn insert-orbit [orbits parent-id child-id]
   (let [parent-id (keyword parent-id)
@@ -19,8 +24,18 @@
 
   (compute-depths-iter :COM 0))
 
-(defn solve2 [orbits]
-  "Soon.")
+(defn min-transfer-count [orbits orbit1 orbit2]
+  (defn path-to [id target]
+    (cond
+      (nil? id) nil
+      (= id target) (list id)
+      :else (let [subpath (remove nil? (mapcat #(path-to % target) (id orbits)))]
+              (if (empty? subpath) nil
+                  (cons id subpath)))))
+
+  (count (disj (symmetric-difference (set (path-to :COM orbit1))
+                                     (set (path-to :COM orbit2)))
+               orbit1 orbit2)))
 
 (defn read-input []
   (clojure.string/split-lines (slurp *in*)))
@@ -28,4 +43,4 @@
 (defn -main []
   (let [orbits (pairs->orbits (read-input))]
     (println "Part 1:" (compute-total-depths orbits))
-    (println "Part 2:" (solve2 orbits))))
+    (println "Part 2:" (min-transfer-count orbits :YOU :SAN))))
