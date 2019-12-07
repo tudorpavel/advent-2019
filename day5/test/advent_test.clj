@@ -2,7 +2,7 @@
   (:require [advent :refer :all]
             [clojure.test :refer :all]))
 
-(deftest solve1-test
+(deftest first-non-zero-output-test
   (with-redefs-fn {#'intcode-computer/run-program
-                   (fn [_ i] {:outputs i})}
-    #(is (= [1] (solve1 [])))))
+                   (fn [_ i] {:output 7})}
+    #(is (= 7 (first-non-zero-output [] 1)))))

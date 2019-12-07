@@ -59,8 +59,8 @@
        99 (assoc program :output :EXIT)
        (throw (AssertionError. "Unexpected instruction code."))))))
 
-(defn make-program [program-str]
-  (mapv read-string (.split program-str ",")))
+(defn str->memory [mem-str]
+  (mapv read-string (.split mem-str ",")))
 
 (defn run-program
   ([memory] (run-program memory []))
