@@ -10,4 +10,4 @@
 
   (let [memory (ic/str->memory (read-input))]
     (println "Part 1:" (boost-keycode memory))
-    (println "Part 2:" "Soon.")))
+    (println "Part 2:" (:output (ic/run-program memory [2])))))

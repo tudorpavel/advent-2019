@@ -1,3 +1,2 @@
 {:deps
- {org.clojure/math.combinatorics {:mvn/version "0.1.6"}
-  intcode-computer {:local/root "../lib/intcode-computer"}}}
+ {}}
