@@ -2,12 +2,7 @@
   (:require [intcode-computer :as ic]))
 
 (defn first-non-zero-output [memory input]
-  (defn first-non-zero-output-iter [program]
-    (if (zero? (:output program))
-      (recur (ic/exec-program program))
-      (:output program)))
-
-  (first-non-zero-output-iter (ic/run-program memory [input])))
+  (first (remove zero? (ic/collect-outputs memory [input]))))
 
 (defn -main []
   (defn read-input []

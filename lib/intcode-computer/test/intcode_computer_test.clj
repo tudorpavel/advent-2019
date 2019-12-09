@@ -2,6 +2,29 @@
   (:require [intcode-computer :refer :all]
             [clojure.test :refer :all]))
 
+(deftest opcode-test
+  (is (= 1 (opcode {:pos 0 :memory [1101 1 1 1]})))
+  (is (= 1 (opcode {:pos 0 :memory [1 1 1 1]})))
+  (is (= 8 (opcode {:pos 0 :memory [1108]})))
+  (is (= 3 (opcode {:pos 4 :memory [1101 1 1 1 22203 1 1 1]})))
+  )
+
+(deftest param-modes-test
+  (is (= '(1 1 0) (param-modes 1101 3)))
+  (is (= '(0 0 0) (param-modes 2 3)))
+  (is (= '(1) (param-modes 104 1)))
+  (is (= '(0) (param-modes 3 1)))
+  (is (= '(0 1 1) (param-modes 11002 3)))
+  (is (= '(0 1 0) (param-modes 1002 3)))
+  (is (= '(1 1 0) (param-modes 1108 3)))
+  )
+
+(deftest operand-address-test
+  (is (= 2 (operand-address {:rel 0 :memory [1 2 3 4]} 1 0)))
+  (is (= 1 (operand-address {:rel 0 :memory [1 2 3 4]} 1 1)))
+  (is (= 3 (operand-address {:rel 1 :memory [1 2 3 4]} 1 2)))
+  )
+
 (deftest str->memory-test
   (is (= [1 0 0 0 99] (str->memory "1,0,0,0,99")))
   (is (= [1 1 1 4 99 5 6 0 99] (str->memory "1,1,1,4,99,5,6,0,99")))
@@ -55,4 +78,18 @@
                                125 20 4 20 1105 1 46 104 999 1105 1 46
                                1101 1000 1 20 4 20 1105 1 46 98 99]
                               [8]))))
+  )
+
+(deftest run-program-day9-part1-test
+  (is (= [109 1 204 -1
+          1001 100 1 100
+          1008 100 16 101
+          1006 101 0 99] (collect-outputs [109 1 204 -1
+                                           1001 100 1 100
+                                           1008 100 16 101
+                                           1006 101 0 99])))
+  (is (= 1219070632396864 (:output (run-program [1102 34915192
+                                                 34915192 7 4 7 99 0]))))
+  (is (= 1125899906842624 (:output (run-program [104 1125899906842624 99]))))
+  (is (= 6 (:output (run-program [109 6 21101 3 3 1 104 3 99]))))
   )
