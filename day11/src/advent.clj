@@ -26,16 +26,31 @@
                (merge (update state :hull merge {(:pos state) paint})
                       next))))))
 
-(defn run-robot [memory]
+(defn run-robot [memory start-panel-color]
   (exec-robot (ic/init-program memory [])
-              {:hull {}
+              {:hull {[0 0] start-panel-color}
                :pos [0 0]
                :dir :N}))
+
+(defn pretty-print [hull]
+  (let [white-panels (remove #(zero? (second %)) hull)
+        min-x (apply min (map first (keys hull)))
+        max-x (apply max (map first (keys hull)))
+        min-y (apply min (map second (keys hull)))
+        max-y (apply max (map second (keys hull)))
+        xs (range min-x (inc max-x))
+        ys (range min-y (inc max-y))]
+    (doall (map println
+                (partition (count xs)
+                           (map #(if (zero? %) " " "⬛")
+                                (for [y ys x xs]
+                                  (get hull [x y] 0))))))))
 
 (defn -main []
   (defn read-input []
     (first (clojure.string/split-lines (slurp *in*))))
 
   (let [memory (ic/str->memory (read-input))]
-    (println "Part 1:" (count (run-robot memory)))
-    (println "Part 2:" "Soon.")))
+    (println "Part 1:" (count (run-robot memory 0)))
+    (println "Part 2:")
+    (pretty-print (run-robot memory 1))))
