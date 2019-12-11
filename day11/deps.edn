@@ -1,0 +1,2 @@
+{:deps
+ {intcode-computer {:local/root "../lib/intcode-computer"}}}
